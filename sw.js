@@ -1,5 +1,5 @@
 /* Service worker: deixa o sistema abrir e funcionar sem sinal. */
-const V = '20261008210657';
+const V = '20261010140853';
 const SHELL = 'lag-shell-' + V;
 const RUN = 'lag-run';
 const FOTOS = 'lag-fotos';
@@ -42,4 +42,21 @@ self.addEventListener('fetch', e => {
   if (/fonts\.(googleapis|gstatic)\.com$/.test(url.hostname)) {
     e.respondWith(caches.open(RUN).then(async c => { const hit = await c.match(req); const net = fetch(req).then(r => { if (r.ok || r.type === 'opaque') c.put(req, r.clone()); return r; }).catch(() => hit); return hit || net; }));
   }
+});
+
+// Avisos push (enviados pelo servidor a cada nova solicitação de cadastro)
+self.addEventListener('push', e => {
+  let d = {}; try { d = e.data ? e.data.json() : {}; } catch (x) { d = { body: e.data ? e.data.text() : '' }; }
+  e.waitUntil(self.registration.showNotification(d.title || 'Lagoinha · Comissionamento', {
+    body: d.body || '', tag: d.tag || 'lag', icon: 'icons/icon-192.png', badge: 'icons/icon-192.png', data: { url: d.url || './#permissoes' }
+  }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || './#permissoes', self.registration.scope).href;
+  e.waitUntil((async () => {
+    const cs = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    for (const c of cs) { if (c.url.startsWith(self.registration.scope)) { try { await c.focus(); c.navigate ? await c.navigate(url) : c.postMessage({ go: url }); } catch (x) {} return; } }
+    await self.clients.openWindow(url);
+  })());
 });

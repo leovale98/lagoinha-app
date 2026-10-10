@@ -260,9 +260,31 @@
       const { error } = await sb.auth.signInWithPassword({ email: U.email, password: p }).catch(e => ({ error: e }));
       return !error;
     },
+    push: {
+      // notificações push (aviso com o aplicativo fechado) — usadas pelo administrador geral
+      supported: () => !!(CFG.vapid && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window),
+      async active() { const r = await navigator.serviceWorker.getRegistration(); const s = r && await r.pushManager.getSubscription(); return !!(s && Notification.permission === 'granted'); },
+      async enable() {
+        const perm = await Notification.requestPermission(); if (perm !== 'granted') throw new Error('denied');
+        const r = await navigator.serviceWorker.ready;
+        let s = await r.pushManager.getSubscription();
+        if (!s) { const k = CFG.vapid.replace(/-/g, '+').replace(/_/g, '/'); const raw = atob(k + '='.repeat((4 - k.length % 4) % 4)); s = await r.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: Uint8Array.from(raw, ch => ch.charCodeAt(0)) }); }
+        const j = s.toJSON();
+        await call(() => sb.from('push_subs').upsert({ endpoint: j.endpoint, sub: j, ua: navigator.userAgent.slice(0, 200) }, { onConflict: 'endpoint' }));
+        return true;
+      },
+      async disable() {
+        const r = await navigator.serviceWorker.getRegistration(); const s = r && await r.pushManager.getSubscription(); if (!s) return;
+        try { await call(() => sb.from('push_subs').delete().eq('endpoint', s.endpoint)); } catch (e) {}
+        await s.unsubscribe();
+      }
+    },
     async signOut() { try { await sb.auth.signOut(); } catch (e) {} LS.del('lag-web-user'); LS.del('lag-web-owner'); location.reload(); },
     sb
   };
+
+  // clique numa notificação com o sistema já aberto: vai para a página indicada
+  try { navigator.serviceWorker && navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.go) location.href = e.data.go; }); } catch (e) {}
 
   // ---------- início ----------
   const domReady = new Promise(r => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', r) : r());
