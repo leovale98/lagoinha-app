@@ -116,9 +116,9 @@
   const avatar = n => 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" rx="20" fill="#004a82"/><text x="20" y="25" font-family="Arial" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">${initials(n)}</text></svg>`);
   const nameOf = id => ((C['people/' + id] || {}).n) || '';
   const user = {
-    async me() { const n = nameOf(U.id) || U.email; return { id: U.id, name: n, email: U.email, avatarUrl: avatar(n), color: '#004a82' }; },
-    async id() { return U.id; },
-    async can() { return true; },
+    async me() { if (!U) return null; const n = nameOf(U.id) || U.email; return { id: U.id, name: n, email: U.email, avatarUrl: avatar(n), color: '#004a82' }; },
+    async id() { return U ? U.id : null; },
+    async can() { return !!U; },
     async isOwner() { return OWNER; },
     async canEdit() { return OWNER; },
     async profiles(ids) { const o = {}; [].concat(ids || []).forEach(i => { const n = nameOf(i); o[i] = { id: i, name: n, avatarUrl: avatar(n), color: '#004a82', guest: false }; }); return o; },
@@ -174,6 +174,9 @@
   function form(btnTxt) { const f = h('form', 'gform'); f.noValidate = true; const msg = h('div', 'gmsg'); msg.setAttribute('role', 'alert'); const b = h('button', 'gbtn', btnTxt); b.type = 'submit'; return { f, msg, b, end() { f.append(msg, b); } }; }
   const errTxt = e => { const m = String((e && e.message) || e || ''); if (/Invalid login/i.test(m)) return 'E-mail ou senha incorretos.'; if (/not confirmed/i.test(m)) return 'E-mail ainda não confirmado. Abra o link que enviamos para o seu e-mail.'; if (/already registered|already exists/i.test(m)) return 'Este e-mail já tem cadastro. Use "Entrar" ou "Esqueci minha senha".'; if (/fetch|network/i.test(m)) return 'Sem conexão. Para o primeiro acesso é preciso estar com sinal.'; if (/rate limit/i.test(m)) return 'Muitas tentativas. Aguarde alguns minutos.'; return 'Não foi possível concluir: ' + m; };
 
+  let VIS = false, BACK = false;   // VIS: plataforma aberta como visitante (sem login)
+  function closeGate() { if (ov) { ov.remove(); ov = null; } }
+  function backLink() { if (BACK) card.append(link('Voltar para a plataforma sem entrar', closeGate)); }
   function viewLogin(note) {
     shell(); head();
     const x = form('Entrar'); const em = field(x.f, 'w-mail', 'E-mail', 'email', 'username', 'nome@empresa.com.br'); const pw = field(x.f, 'w-pwd', 'Senha', 'password', 'current-password'); x.end();
@@ -181,6 +184,7 @@
     card.append(x.f);
     const ls = h('div', 'glinks'); ls.append(link('Esqueci minha senha', viewForgot), link('Primeiro Acesso', viewSignup)); card.append(ls);
     card.append(h('div', 'ginfo', 'Use o e-mail e a senha cadastrados na plataforma.'));
+    backLink();
     x.f.onsubmit = async e => {
       e.preventDefault(); x.msg.textContent = ''; const mail = em.value.trim().toLowerCase();
       if (!EMAIL_RE.test(mail)) { x.msg.textContent = 'Informe o seu e-mail.'; return; }
@@ -197,6 +201,7 @@
     card.append(h('div', 'ginfo', 'Crie seu usuário (e-mail) e senha. Em seguida você completa seus dados.'));
     const x = form('Criar acesso'); const em = field(x.f, 'w-mail', 'E-mail', 'email', 'username', 'nome@empresa.com.br'); const p1 = field(x.f, 'w-p1', 'Senha (mín. 6 caracteres)', 'password', 'new-password'); const p2 = field(x.f, 'w-p2', 'Confirmar senha', 'password', 'new-password'); x.end();
     card.append(x.f, link('Voltar para o login', () => viewLogin()));
+    backLink();
     x.f.onsubmit = async e => {
       e.preventDefault(); x.msg.textContent = ''; const mail = em.value.trim().toLowerCase();
       if (!EMAIL_RE.test(mail)) { x.msg.textContent = 'Informe um e-mail válido.'; return; }
@@ -240,6 +245,7 @@
 
   let entered = false;
   async function enter(u) {
+    if (VIS) { location.reload(); return; }   // entrou a partir do modo visitante: recarrega já identificado
     if (entered) return; entered = true;
     U = { id: u.id, email: (u.email || '').toLowerCase() };
     LS.set('lag-web-user', U);
@@ -251,8 +257,14 @@
     readyRes();
   }
 
+  function visitor() {
+    if (entered || VIS) return; VIS = true;
+    if (navigator.onLine) startRealtime();
+    readyRes();
+  }
   window.__WEB = {
     email: '',
+    login(back) { BACK = !!back; viewLogin(); },
     blobUrl,
     async checkPwd(p) {
       if (!U) return false;
@@ -302,7 +314,7 @@
     if (session) { if (/access_token|type=/.test(location.hash)) history.replaceState(null, '', location.pathname); enter(session.user); return; }
     const cached = LS.get('lag-web-user');
     if (!navigator.onLine && cached) { enter(cached); return; }   // sem sinal: segue com o último usuário deste aparelho
-    viewLogin();
+    await cacheReady; visitor();   // sem sessão: abre como visitante; a plataforma decide se exige login
   })();
 
   // ---------- interface compatível com window.claude ----------
