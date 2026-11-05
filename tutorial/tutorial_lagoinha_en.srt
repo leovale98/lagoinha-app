@@ -1,0 +1,60 @@
+1
+00:00:00,600 --> 00:00:10,477
+Welcome to the commissioning platform for the HD trackers at the Lagoinha solar plant. In this video, we walk through the executive view and how to use the platform.
+
+2
+00:00:11,967 --> 00:00:19,540
+Each row is shown in the color of its current stage. The legend on the left explains every color; on mobile, tap “Legend”.
+
+3
+00:00:21,033 --> 00:00:30,335
+The first tab gathers what matters for decision-making. The “Daily summary” turns the numbers into one sentence: progress, pace and forecast completion.
+
+4
+00:00:31,833 --> 00:00:44,569
+Six numbers answer the question: where are we? Inspection completed, commissioned rows, open non-conformities, deviation from the H D plan, fifteen-day observation, and materials in shortage.
+
+5
+00:00:46,067 --> 00:00:54,536
+Tap the i button next to each title to read what the indicator shows and how it is calculated. The cards open the detail tab.
+
+6
+00:00:56,033 --> 00:01:07,297
+This chart shows where the flow is stuck. Many rows awaiting signatures point to a signature bottleneck. Many rows under correction point to an execution bottleneck on the H D side.
+
+7
+00:01:08,800 --> 00:01:17,355
+Compare the four areas, LAG one to LAG four, and follow weekly output. A drop in pace signals a delay in completion.
+
+8
+00:01:18,867 --> 00:01:26,269
+An automatic list of what needs a decision or follow-up, with the owner of the next action. Click to open the related tab.
+
+9
+00:01:27,767 --> 00:01:36,748
+In the Help tab you will find the guided tour, this video, a step-by-step guide for each role, the meaning of every color, and frequently asked questions.
+
+10
+00:01:38,233 --> 00:01:50,073
+Each row follows the same flow: inspection, H D signature, C G N validation, correction, fifteen business days of observation, and finally commissioning with four signatures.
+
+11
+00:01:51,567 --> 00:02:05,092
+Inspectors: open the inspection, mark each item as compliant, non-compliant or not applicable, and record measurements and photos. For each non-conformity, describe the condition found before any adjustment.
+
+12
+00:02:06,600 --> 00:02:17,715
+H D technicians: correct only what has been released, whether mechanical, electrical or both. Record a description and a photo, then tap: attest, resolved and OK.
+
+13
+00:02:19,200 --> 00:02:28,224
+C G N inspectors: validate reports, accept or return corrections, record the daily observation check, and sign the final report.
+
+14
+00:02:29,733 --> 00:02:34,469
+The glossary lists every map color, from a row not yet started to a commissioned one.
+
+15
+00:02:35,967 --> 00:02:41,812
+For questions or access permissions, contact Leonardo Dantas at C G N. Thank you!
+
