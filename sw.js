@@ -1,5 +1,5 @@
 /* Service worker: deixa o sistema abrir e funcionar sem sinal. */
-const V = '20261103003712';
+const V = '20261105011754';
 const SHELL = 'lag-shell-' + V;
 const RUN = 'lag-run';
 const FOTOS = 'lag-fotos';
