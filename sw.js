@@ -1,5 +1,5 @@
 /* Service worker: deixa o sistema abrir e funcionar sem sinal. */
-const V = '20261105012645';
+const V = '20261105015312';
 const SHELL = 'lag-shell-' + V;
 const RUN = 'lag-run';
 const FOTOS = 'lag-fotos';
@@ -18,6 +18,7 @@ function timeout(ms) { return new Promise((_, rj) => setTimeout(() => rj(new Err
 self.addEventListener('fetch', e => {
   const req = e.request; if (req.method !== 'GET') return;
   const url = new URL(req.url);
+  if (/\/tutorial\//.test(url.pathname) || req.headers.has('range')) return; // vídeo: deixa o navegador tratar (requisições parciais)
   // Página principal: tenta a rede (pega versão nova), cai para a cópia guardada sem sinal
   if (req.mode === 'navigate') {
     e.respondWith((async () => {
