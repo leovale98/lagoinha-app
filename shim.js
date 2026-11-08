@@ -71,7 +71,7 @@
     emitCol(col); Object.keys(out).forEach(emitDoc);
   }
 
-  // acesso de apresentação (gerência/diretoria): somente visualização; o Supabase também recusa a gravação (supabase_acesso_apresentacao.sql)
+  // acesso de apresentação: somente visualização; o Supabase também recusa a gravação (supabase_acesso_apresentacao.sql)
   const roGuard = () => { if (window.__RO) { const e = new Error('Acesso de apresentação: somente visualização.'); e.code = 'permission-denied'; throw e; } };
   const db = {
     doc(path) {
