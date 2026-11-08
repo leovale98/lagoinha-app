@@ -71,14 +71,16 @@
     emitCol(col); Object.keys(out).forEach(emitDoc);
   }
 
+  // acesso de apresentação (gerência/diretoria): somente visualização; o Supabase também recusa a gravação (supabase_acesso_apresentacao.sql)
+  const roGuard = () => { if (window.__RO) { const e = new Error('Acesso de apresentação: somente visualização.'); e.code = 'permission-denied'; throw e; } };
   const db = {
     doc(path) {
       return {
         path,
         async get() { await cacheReady; try { await fetchDoc(path); } catch (e) { if (e !== OFF && e.code !== 'offline') throw e; } return snap(path, C[path]); },
-        async set(v) { await call(() => sb.from('docs').upsert({ path, data: v })); setLocal(path, clone(v)); },
-        async update(v) { await call(() => sb.rpc('doc_merge', { p: path, patch: v })); setLocal(path, deepMerge(C[path], v)); },
-        async delete() { await call(() => sb.from('docs').delete().eq('path', path)); setLocal(path, null); },
+        async set(v) { roGuard(); await call(() => sb.from('docs').upsert({ path, data: v })); setLocal(path, clone(v)); },
+        async update(v) { roGuard(); await call(() => sb.rpc('doc_merge', { p: path, patch: v })); setLocal(path, deepMerge(C[path], v)); },
+        async delete() { roGuard(); await call(() => sb.from('docs').delete().eq('path', path)); setLocal(path, null); },
         onSnapshot(fn, err) {
           (docL[path] = docL[path] || []).push(fn);
           cacheReady.then(() => { if (path in C) fn(snap(path, C[path])); fetchDoc(path).catch(e => { if (!(path in C)) fn(snap(path, null)); if (err && e.code !== 'offline') err(e); }); });
@@ -132,6 +134,7 @@
   const blobUrl = id => `${CFG.url}/storage/v1/object/public/fotos/${encodeURIComponent(id)}.jpg`;
   const assets = {
     async upload(blob) {
+      roGuard();
       const id = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2)).replace(/-/g, '');
       await call(() => sb.storage.from('fotos').upload(id + '.jpg', blob, { contentType: 'image/jpeg', upsert: false }));
       return { id, url: blobUrl(id), sizeBytes: blob.size, contentType: 'image/jpeg' };
