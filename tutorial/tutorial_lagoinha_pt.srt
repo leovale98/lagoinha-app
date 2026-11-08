@@ -11,50 +11,50 @@ No mapa do parque, cada fileira aparece com a cor da etapa em que está. A legen
 A visão executiva reúne o essencial para a tomada de decisão. O resumo do dia traduz os números em uma frase: avanço, ritmo e término previsto.
 
 4
-00:00:31,233 --> 00:00:42,881
-Seis números respondem onde estamos: inspeção concluída, fileiras comissionadas, não conformidades em aberto, desvio em relação ao plano da HD, observação de quinze dias e materiais em falta.
+00:00:31,233 --> 00:00:45,847
+Barras separadas mostram o avanço da inspeção total, da mecânica e da elétrica. Logo abaixo, os cartões trazem o comissionamento, as não conformidades em aberto, o desvio em relação ao plano da HD, a observação de quinze dias e os materiais em falta.
 
 5
-00:00:44,367 --> 00:00:52,068
-Toque no botão i, ao lado de cada título, para ler o que o indicador mostra e como é calculado. Os cartões levam à aba de detalhe.
+00:00:47,333 --> 00:00:55,056
+Toque no botão i, ao lado de cada título, para ver o que o indicador mostra e como é calculado. Os cartões levam à aba de detalhe.
 
 6
-00:00:53,567 --> 00:01:05,172
+00:00:56,567 --> 00:01:08,172
 Este gráfico mostra onde o fluxo trava. Muitas fileiras aguardando assinaturas indicam gargalo de assinatura. Muitas em correção de não conformidades indicam gargalo de execução da HD.
 
 7
-00:01:06,667 --> 00:01:14,517
+00:01:09,667 --> 00:01:17,517
 Compare os parques, de LAG zero um a LAG zero quatro, e acompanhe a produção semanal. Uma queda no ritmo antecipa atraso no término.
 
 8
-00:01:16,033 --> 00:01:24,119
+00:01:19,033 --> 00:01:27,119
 Lista automática do que precisa de decisão ou cobrança, já com o responsável pela próxima ação. Clique para abrir a aba correspondente.
 
 9
-00:01:25,633 --> 00:01:33,313
+00:01:28,633 --> 00:01:36,313
 Na aba ajuda, você encontra o tour guiado, este vídeo, o passo a passo por perfil, o significado das cores e as perguntas frequentes.
 
 10
-00:01:34,800 --> 00:01:45,168
+00:01:37,800 --> 00:01:48,168
 O fluxo de cada fileira é: inspeção, assinatura da HD, validação da CGN, correção, observação de quinze dias úteis e, por fim, o comissionamento com quatro assinaturas.
 
 11
-00:01:46,667 --> 00:01:58,805
+00:01:49,667 --> 00:02:01,805
 Inspetor: abra a inspeção, marque cada item como conforme, não conforme ou não aplicável, e registre medições e fotos. Em cada não conformidade, descreva o estado encontrado antes de qualquer ajuste.
 
 12
-00:02:00,300 --> 00:02:09,537
+00:02:03,300 --> 00:02:12,537
 Técnico da HD: corrija apenas o que estiver liberado, seja mecânica, elétrica ou ambas. Registre a descrição e a foto, e toque em atestar: resolvido e OK.
 
 13
-00:02:11,033 --> 00:02:19,652
+00:02:14,033 --> 00:02:22,652
 Fiscal da CGN: valide os relatórios, aceite ou devolva as correções, registre a checagem diária da observação e assine o relatório final.
 
 14
-00:02:21,167 --> 00:02:26,180
+00:02:24,167 --> 00:02:29,180
 O glossário traz todas as cores do mapa, da fileira não iniciada até a comissionada.
 
 15
-00:02:27,667 --> 00:02:32,936
+00:02:30,667 --> 00:02:35,936
 Dúvidas ou liberação de permissões: fale com Leonardo Dantas, da CGN. Bom trabalho!
 
