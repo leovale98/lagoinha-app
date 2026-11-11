@@ -1,5 +1,5 @@
 /* Service worker: deixa o sistema abrir e funcionar sem sinal. */
-const V = '20261111202821';
+const V = '20261111203808';
 const SHELL = 'lag-shell-' + V;
 const RUN = 'lag-run';
 const FOTOS = 'lag-fotos';
@@ -45,7 +45,7 @@ self.addEventListener('fetch', e => {
   }
 });
 
-// Avisos push (enviados pelo servidor a cada nova solicitação de cadastro)
+// Avisos push (enviados pelo servidor: novas solicitações de cadastro e relatórios devolvidos pela HD)
 self.addEventListener('push', e => {
   let d = {}; try { d = e.data ? e.data.json() : {}; } catch (x) { d = { body: e.data ? e.data.text() : '' }; }
   e.waitUntil(self.registration.showNotification(d.title || 'Lagoinha · Comissionamento', {
