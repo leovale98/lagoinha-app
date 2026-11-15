@@ -1,5 +1,5 @@
 /* Service worker: deixa o sistema abrir e funcionar sem sinal. */
-const V = '20261112114837';
+const V = '20261115224233';
 const SHELL = 'lag-shell-' + V;
 const RUN = 'lag-run';
 const FOTOS = 'lag-fotos';
@@ -18,9 +18,12 @@ function timeout(ms) { return new Promise((_, rj) => setTimeout(() => rj(new Err
 self.addEventListener('fetch', e => {
   const req = e.request; if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (/\/tutorial\//.test(url.pathname) || req.headers.has('range')) return; // vídeo: deixa o navegador tratar (requisições parciais)
+  if (/\/(tutorial|apresentacao)\//.test(url.pathname) || req.headers.has('range')) return; // vídeo e página de apresentação: deixa o navegador tratar
   // Página principal: tenta a rede (pega versão nova), cai para a cópia guardada sem sinal
   if (req.mode === 'navigate') {
+    // só a página do sistema é guardada como index.html; outras páginas do site seguem direto pela rede
+    const root = new URL('./', self.registration.scope).pathname;
+    if (url.origin !== location.origin || (url.pathname !== root && url.pathname !== root + 'index.html')) return;
     e.respondWith((async () => {
       try { const r = await Promise.race([fetch(req, { cache: 'no-store' }), timeout(6000)]); if (r && r.ok) { const c = await caches.open(SHELL); c.put('./index.html', r.clone()); } return r; }
       catch (x) { return (await caches.match('./index.html', { ignoreSearch: true })) || (await caches.match('./', { ignoreSearch: true })) || Response.error(); }
