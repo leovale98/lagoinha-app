@@ -544,7 +544,7 @@ function rBen(){$('#btabs').replaceChildren(...BEN.map((b,i)=>{const t=el('butto
   $('#benx').replaceChildren(...BEN[ben].x.map(x=>{const a=el('article');a.append(el('h3',null,x[lang][0]),el('p',null,x[lang][1]));return a;}));}
 function rRoles(){$('#roles').replaceChildren(...ROLES.map(r=>{const d=el('div');d.append(el('i',null,r[lang][0]),el('b',null,typeof r.t==='string'?r.t:r.t[lang]),el('p',null,r[lang][1]));return d;}));}
 /* abertura: cada parágrafo ganha destaque ao entrar na faixa de leitura da tela */
-function litOrigin(){const lim=innerHeight*0.72;document.querySelectorAll('.origin p').forEach(p=>p.classList.toggle('lit',p.getBoundingClientRect().top<lim));}
+function litOrigin(){const lim=innerHeight*0.72,ps=[...document.querySelectorAll('.origin p')];let k=0;ps.forEach((p,i)=>{if(p.getBoundingClientRect().top<lim)k=i;});ps.forEach((p,i)=>p.classList.toggle('lit',i===k));}
 {let q=0;const f=()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;litOrigin();});};addEventListener('scroll',f,{passive:true});addEventListener('resize',f);}
 function all(){txt();setTimeout(litOrigin,0);rCmp();rSim();rFlow();rDemo(false);rMods();rBen();rRoles();}
 document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;try{localStorage.setItem('lag-apres-lang',lang);}catch(e){}all();});
